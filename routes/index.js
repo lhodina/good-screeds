@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-
-const { asyncHandler, csrfProtection } = require('./utils');
+const { environment } = require('../config');
+const { asyncHandler, csrfProtection } = require('../utils');
 
 const router = express.Router();
 
@@ -13,13 +13,5 @@ router.get('/', (req, res) => {
 });
 
 
-router.get('/schedule', (req, res) => {
-    res.send('Schedule');
-});
-
-
-router.get('/roster', (req, res) => {
-    res.send('Roster');
-});
 
 module.exports = router;

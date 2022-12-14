@@ -3,4 +3,9 @@ html
         title= title
     body
         h1= heading
+
+        if locals.authenticated
+            form(action='/users/logout' method='post')
+                button(type='submit') Logout
+
         block content
