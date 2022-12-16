@@ -1,11 +1,16 @@
 html
     head
         title= title
+        link(rel='stylesheet' href='/styles/index.css')
     body
         h1= heading
 
         if locals.authenticated
+            span Welcome, #{user.username}
             form(action='/users/logout' method='post')
                 button(type='submit') Logout
+        else
+            a(href='/users/login') Login
+            a(href='/users/register') Register
 
         block content

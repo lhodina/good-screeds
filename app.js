@@ -2,6 +2,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const session = require('express-session');
+const path = require('path');
 
 const { environment, sessionSecret } = require('./config');
 const { restoreUser } = require('./auth');
@@ -21,6 +22,7 @@ app.set('view engine', 'pug');
 
 app.use(morgan('dev'));
 app.use(cookieParser(sessionSecret));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   name: 'goodscreeds.sid',
