@@ -1,0 +1,30 @@
+include utils.pug
+
+input(type='hidden' name='_csrf' value=csrfToken)
++field('Title*', 'title')
+br
+label(for='author') Author*
+input(name='author' list='authors')
+datalist(id='authors' name='authors')
+    if authors
+        each author in authors
+            option(value=author.name)
+    else
+        option(value="HOTDOG")
+        option(value="BANANA")
+br
++field('Content (paste shorter content like songs, tweets, etc.)', 'content', '', 'textarea')
+br
++field('URL (link to longer content like books)', 'url')
+br
++field('Image Link', 'imgLink')
+br
++field('My Review', 'review', '', 'textarea')
+br
+fieldset
+    div
+        input(type="radio" id="read" name="readStatus" value="1" checked)
+        label(for="read") Read
+    div
+        input(type="radio" id="wantRead" name="watchedStatus" value="0")
+        label(for="wantToRead") Want To Read

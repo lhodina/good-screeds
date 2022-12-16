@@ -1,0 +1,9 @@
+extends layout.pug
+include utils.pug
+block content
+    +validationErrorSummary(errors)
+    form(action='/screeds/new' method='post')
+        include screed-form-fields.pug
+        br
+        button(type='submit') Add Screed
+        a(href='/') Cancel

@@ -8,9 +8,7 @@ const { environment, sessionSecret } = require('./config');
 const { restoreUser } = require('./auth');
 const indexRouter = require('./routes');
 const usersRouter = require('./routes/users');
-
-
-// const screedsRouter = require('./routes/screeds');
+const screedsRouter = require('./routes/screeds');
 // const shelvesRouter = require('./routes/shelves');
 // const tagsRouter = require('./routes/tags');
 // const authorsRouter = require('./routes/authors');
@@ -41,7 +39,7 @@ app.use(restoreUser);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/screeds', screedsRouter);
+app.use('/screeds', screedsRouter);
 // app.use('/shelves', shelvesRouter);
 // app.use('/tags', tagsRouter);
 // app.use('/authors', authorsRouter);
