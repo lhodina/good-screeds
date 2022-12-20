@@ -1,0 +1,27 @@
+extends layout.pug
+include utils.pug
+block content
+    +validationErrorSummary(errors)
+    form(action=`/shelves/${shelf.id}/edit` method='post')
+        include shelf-form-fields.pug
+        br
+        br
+        label(for='title') Add a Screed to This Shelf
+        input(name='title' list='screedlist')
+        datalist(id='screedlist' name='screedlist')
+            if screeds
+                each screed in screeds
+                    option(value=screed.title)
+            else
+                option(value="THIS WILL BE A SCREED TITLE")
+                option(value="THIS WILL BE ANOTHER SCREED TITLE")
+                option(value="AND ANOTHER")
+                option(value="AND SO ON")
+                option(value="AND SO FORTH")
+        br
+        if (message)
+            p= message
+            a(href='/') Back
+        else
+            button(type='submit') Save
+            a(href='/') Cancel

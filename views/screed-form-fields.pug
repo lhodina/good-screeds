@@ -10,10 +10,13 @@ datalist(id='authors' name='authors')
         each author in authors
             option(value=author.name)
     else
-        option(value="HOTDOG")
-        option(value="BANANA")
+        option(value="THIS WILL BE AN AUTHOR'S NAME")
+        option(value="THIS WILL BE ANOTHER AUTHOR'S NAME")
+        option(value="AND ANOTHER")
+        option(value="AND SO ON")
+        option(value="AND SO FORTH")
 br
-+field('Content (paste shorter content like songs, tweets, etc.)', 'content', '', 'textarea')
++field('Content (paste shorter content like songs, tweets, etc.)', 'text', '', 'textarea')
 br
 +field('URL (link to longer content like books)', 'url')
 br
@@ -26,5 +29,5 @@ fieldset
         input(type="radio" id="read" name="readStatus" value="1" checked)
         label(for="read") Read
     div
-        input(type="radio" id="wantRead" name="watchedStatus" value="0")
+        input(type="radio" id="wantToRead" name="readStatus" value="0")
         label(for="wantToRead") Want To Read

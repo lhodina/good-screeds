@@ -1,0 +1,7 @@
+include utils.pug
+
+input(type='hidden' name='_csrf' value=csrfToken)
+if (shelf)
+    +field('Name*', 'name', shelf.name)
+else
+    +field('Name*', 'name')

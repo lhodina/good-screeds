@@ -6,6 +6,7 @@ html
         nav
             a(href='/') Home
             a(href='/screeds/new') Add Screed
+            a(href='/shelves/new') Add Shelf
             if locals.authenticated
                 span Welcome, #{user.username}
                 form(action='/users/logout' method='post')
