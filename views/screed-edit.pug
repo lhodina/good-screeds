@@ -1,0 +1,12 @@
+extends layout.pug
+include utils.pug
+block content
+    +validationErrorSummary(errors)
+    if (message)
+        p= message
+    
+    form(action=`/screeds/${screed.id}/edit` method='post')
+        include screed-form-fields.pug
+        br
+        button(type='submit') Update
+        a(href='/') Cancel

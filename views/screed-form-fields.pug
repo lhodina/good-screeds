@@ -1,32 +1,61 @@
 include utils.pug
 
 input(type='hidden' name='_csrf' value=csrfToken)
-+field('Title*', 'title')
+if (title)
+    +field('Title*', 'title', title)
+else
+    +field('Title*', 'title')
 br
 label(for='author') Author*
-input(name='author' list='authors')
+if (author)
+    input(name='author' list='authors' value=author.name)
+    datalist(id='authors' name='authors' )
+        if (authors)
+            each author in authors
+                option(value=author.name)
+        else
+            span (no authors yet)
+else
+    input(name='author' list='authors')
 datalist(id='authors' name='authors')
     if (authors)
         each author in authors
             option(value=author.name)
     else
         span (no authors yet)
-
 br
-+field('Content (paste shorter content like songs, tweets, etc.)', 'text', '', 'textarea')
+if (text)
+    +field('Content (paste shorter content like songs, tweets, etc.)', 'text', text, 'textarea')
+else
+    +field('Content (paste shorter content like songs, tweets, etc.)', 'text', '', 'textarea')
 br
-+field('URL (link to longer content like books)', 'url')
+if (url)
+    +field('URL (link to longer content like books)', 'url', url)
+else
+    +field('URL (link to longer content like books)', 'url')
 br
-+field('Image Link', 'imgLink')
+if (imgLink)
+    +field('Image Link', 'imgLink', imgLink)
+else
+    +field('Image Link', 'imgLink')
 br
-+field('My Review', 'review', '', 'textarea')
+if (review)
+    +field('My Review', 'review', review, 'textarea')
+else
+    +field('My Review', 'review', '', 'textarea')
 br
 fieldset
     div
-        input(type="radio" id="read" name="readStatus" value="1" checked)
+        if (readStatus === true)
+            input(type="radio" id="read" name="readStatus" value="1" checked)
+        else
+            input(type="radio" id="read" name="readStatus" value="1")
         label(for="read") Read
     div
-        input(type="radio" id="wantToRead" name="readStatus" value="0")
+        if (readStatus === false)
+            input(type="radio" id="wantToRead" name="readStatus" value="0" checked)
+        else
+            input(type="radio" id="wantToRead" name="readStatus" value="0")
         label(for="wantToRead") Want To Read
 br
 label(for='shelf') Save this screed to a shelf:
