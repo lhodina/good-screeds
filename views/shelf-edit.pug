@@ -6,19 +6,26 @@ block content
         include shelf-form-fields.pug
         br
         br
-        label(for='title') Add a Screed to This Shelf
+        span Create a new screed for this shelf:
+        br
+        a(href=`/shelves/${shelf.id}/screeds/new`) Create
+        br
+        br
+        label(for='title') ...Or choose an existing screed:
+        br
         input(name='title' list='screedlist')
         datalist(id='screedlist' name='screedlist')
-            if screeds
-                each screed in screeds
+            if allScreeds
+                each screed in allScreeds
                     option(value=screed.title)
             else
-                option(value="THIS WILL BE A SCREED TITLE")
-                option(value="THIS WILL BE ANOTHER SCREED TITLE")
-                option(value="AND ANOTHER")
-                option(value="AND SO ON")
-                option(value="AND SO FORTH")
+                span No screeds yet
         br
+        ul
+            if (shelfScreeds)
+                each shelfScreed in shelfScreeds
+                    li= shelfScreed.title
+
         if (message)
             p= message
             a(href='/') Back

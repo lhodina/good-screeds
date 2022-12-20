@@ -12,7 +12,9 @@ const router = express.Router();
 
 router.get('/new', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const { userId } = req.session.auth;
+    const shelves = Shelf.findAll({ where: userId });
     res.render('shelf-add', {
+        shelves,
         csrfToken: req.csrfToken()
     });
 }));
@@ -20,11 +22,27 @@ router.get('/new', requireAuth, csrfProtection, asyncHandler(async (req, res) =>
 
 router.get('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     const shelfId = parseInt(req.params.id, 10);
-    const shelf = await Shelf.findByPk(shelfId);
-    const screeds = await Screed.findAll();
+
+    const shelf = await Shelf.findByPk(shelfId, {
+        include: {
+            model: Screed
+        }
+    });
+
+    const shelfScreeds = shelf.dataValues.Screeds.map(data => {
+        return data.dataValues;
+    });
+
+    console.log('shelfScreeds:', shelfScreeds);
+
+    console.log('shelf:', shelf);
+
+    const allScreeds = await Screed.findAll();
+
     res.render('shelf-edit', {
         shelf,
-        screeds,
+        allScreeds,
+        shelfScreeds,
         csrfToken: req.csrfToken()
     });
 }));
@@ -71,6 +89,21 @@ router.post('/', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
 
     res.redirect(`/shelves/${shelf.id}/edit`);
 }));
+
+
+router.get(`/:id/screeds/new`, csrfProtection, asyncHandler(async (req, res) => {
+    const { userId } = req.session.auth;
+    const shelfId = parseInt(req.params.id, 10);
+    const shelf = await Shelf.findByPk(shelfId);
+    const authors = await Author.findAll();
+    
+    res.render('screed-add', {
+        authors,
+        shelf,
+        csrfToken: req.csrfToken()
+    });
+}));
+
 
 
 module.exports = router;

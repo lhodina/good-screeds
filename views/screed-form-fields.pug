@@ -6,15 +6,12 @@ br
 label(for='author') Author*
 input(name='author' list='authors')
 datalist(id='authors' name='authors')
-    if authors
+    if (authors)
         each author in authors
             option(value=author.name)
     else
-        option(value="THIS WILL BE AN AUTHOR'S NAME")
-        option(value="THIS WILL BE ANOTHER AUTHOR'S NAME")
-        option(value="AND ANOTHER")
-        option(value="AND SO ON")
-        option(value="AND SO FORTH")
+        span (no authors yet)
+
 br
 +field('Content (paste shorter content like songs, tweets, etc.)', 'text', '', 'textarea')
 br
@@ -31,3 +28,17 @@ fieldset
     div
         input(type="radio" id="wantToRead" name="readStatus" value="0")
         label(for="wantToRead") Want To Read
+br
+label(for='shelf') Save this screed to a shelf:
+br
+if (shelf)
+    input(name='shelf' value=shelf.name)
+else
+    input(name='shelf' list='shelves')
+    datalist(id='shelves' name='shelves')
+        if (shelves)
+            each shelf in shelves
+                option(value=shelf.name)
+        else
+            span (no shelves yet)
+    br

@@ -8,13 +8,15 @@ const { Shelf } = db;
 const router = express.Router();
 
 router.get('/', asyncHandler(async (req, res) => {
-    const { userId } = req.session.auth;
-    const shelves = await Shelf.findAll({ where: { userId } });
-    res.render('user-home', {
-        title: 'Welcome',
-        heading: 'Home',
-        shelves
-    });
+    if (req.session.auth) {
+        const { userId } = req.session.auth;
+        const shelves = await Shelf.findAll({ where: { userId } });
+        res.render('index', {
+            shelves
+        });
+    } else {
+        res.render('index');
+    }
 }));
 
 

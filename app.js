@@ -6,7 +6,7 @@ const path = require('path');
 
 const { environment, sessionSecret } = require('./config');
 const { restoreUser } = require('./auth');
-const indexRouter = require('./routes/userHome');
+const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const screedsRouter = require('./routes/screeds');
 const shelvesRouter = require('./routes/shelves');
