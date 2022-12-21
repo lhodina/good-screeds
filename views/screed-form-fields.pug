@@ -60,7 +60,7 @@ fieldset
 br
 label(for='shelf') Save this screed to a shelf:
 br
-if (shelf)
+if (shelf && !shelves)
     input(name='shelf' value=shelf.name)
 else
     input(name='shelf' list='shelves')

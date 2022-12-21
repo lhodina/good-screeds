@@ -10,11 +10,16 @@ const { requireAuth } = require('../auth');
 const router = express.Router();
 
 
+const shelfValidators = [
+    check('name')
+      .exists({ checkFalsy: true })
+      .withMessage('Please provide a value for Name')
+];
+
+
+
 router.get('/new', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
-    const { userId } = req.session.auth;
-    const shelves = Shelf.findAll({ where: userId });
     res.render('shelf-add', {
-        shelves,
         csrfToken: req.csrfToken()
     });
 }));
@@ -33,10 +38,6 @@ router.get('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, re
         return data.dataValues;
     });
 
-    console.log('shelfScreeds:', shelfScreeds);
-
-    console.log('shelf:', shelf);
-
     const allScreeds = await Screed.findAll();
 
     res.render('shelf-edit', {
@@ -48,10 +49,8 @@ router.get('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, re
 }));
 
 
-router.post('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
-    console.log("req.body:", req.body);
+router.post('/:id/edit', requireAuth, csrfProtection, shelfValidators, asyncHandler(async (req, res) => {
     const shelfId = parseInt(req.params.id, 10);
-    console.log("shelfId:", shelfId);
     const shelf = await Shelf.findByPk(shelfId);
 
     const {
@@ -59,35 +58,53 @@ router.post('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, r
         title
     } = req.body;
 
-    await shelf.update({
-        name
-    });
+    const validatorErrors = validationResult(req);
+    if (!validatorErrors.isEmpty()) {
+        const errors = validatorErrors.array().map((error) => error.msg);
+        res.render('shelf-edit', {
+            errors,
+            shelf,
+            csrfToken: req.csrfToken()
+        });
+    } else {
+        await shelf.update({
+            name
+        });
 
-    const screed = await Screed.findOne({ where: { title } });
-    console.log("screed:", screed);
+        const screed = await Screed.findOne({ where: { title } });
 
-    await ScreedShelf.create({
-        screedId: screed.id,
-        shelfId: shelf.id
-    });
+        await ScreedShelf.create({
+            screedId: screed.id,
+            shelfId: shelf.id
+        });
 
-    res.render('shelf-edit', {
-        shelf,
-        message: "Shelf updated successfully!",
-        csrfToken: req.csrfToken()
-    });
+        res.render('shelf-edit', {
+            shelf,
+            message: "Shelf updated successfully!",
+            csrfToken: req.csrfToken()
+        });
+    }
 }));
 
 
-router.post('/', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
+router.post('/', requireAuth, csrfProtection, shelfValidators, asyncHandler(async (req, res) => {
     const { userId } = req.session.auth;
     const { name } = req.body;
-    const shelf = await Shelf.create({
-        name,
-        userId
-    });
+    const validatorErrors = validationResult(req);
+    if (!validatorErrors.isEmpty()) {
+        const errors = validatorErrors.array().map((error) => error.msg);
+        res.render('shelf-add', {
+            errors,
+            csrfToken: req.csrfToken()
+        });
+    } else {
+        const shelf = await Shelf.create({
+            name,
+            userId
+        });
 
-    res.redirect(`/shelves/${shelf.id}/edit`);
+        res.redirect(`/shelves/${shelf.id}/edit`);
+    }
 }));
 
 
@@ -96,7 +113,7 @@ router.get(`/:id/screeds/new`, csrfProtection, asyncHandler(async (req, res) => 
     const shelfId = parseInt(req.params.id, 10);
     const shelf = await Shelf.findByPk(shelfId);
     const authors = await Author.findAll();
-    
+
     res.render('screed-add', {
         authors,
         shelf,
