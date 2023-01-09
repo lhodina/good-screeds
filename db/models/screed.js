@@ -1,6 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Screed = sequelize.define('Screed', {
+    userId: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
     title: {
       allowNull: false,
       type: DataTypes.STRING(50)
@@ -22,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade'
     });
 
-    
+
     const shelfMapping = {
       through: 'ScreedShelf',
       otherKey: 'shelfId',

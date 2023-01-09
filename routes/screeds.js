@@ -66,6 +66,7 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
         }
 
         const screed = await Screed.create({
+            userId,
             title,
             authorId,
             text,
@@ -86,19 +87,19 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
         const existingShelf = await Shelf.findOne( { where: { name: shelf } });
         if (existingShelf) {
             shelfId = existingShelf.id;
-        } else {
+        } else if (shelf) {
             const newShelf = await Shelf.create({
                 name: shelf,
                 userId
             });
 
             shelfId = newShelf.id;
-        }
 
-        await ScreedShelf.create({
-            screedId: screed.id,
-            shelfId
-        });
+            await ScreedShelf.create({
+                screedId: screed.id,
+                shelfId
+            });
+        }
 
         res.redirect('/');
     }
@@ -165,16 +166,6 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
         userId,
         screedId
     } });
-
-    // let review;
-    // let readStatus;
-    // if (userNote && userNote.review) {
-    //     review = userNote.review;
-    // }
-
-    // if (userNote && userNote.readStatus !== null) {
-    //     readStatus = userNote.readStatus;
-    // }
 
     const author = await Author.findByPk(screed.authorId);
     const authors = await Author.findAll();

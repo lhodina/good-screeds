@@ -21,14 +21,12 @@ block content
             else
                 span No screeds yet
         br
-        ul
-            if (shelfScreeds)
-                each shelfScreed in shelfScreeds
-                    li= shelfScreed.title
 
         if (message)
             p= message
-            a(href='/') Back
+            a(href=`/shelves/${shelf.id}`) Back
         else
             button(type='submit') Save
-            a(href='/') Cancel
+            a(href=`/shelves/${shelf.id}`) Cancel
+
+    +displayScreeds(shelfScreeds)

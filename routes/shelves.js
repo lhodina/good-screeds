@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator');
 const db = require('../db/models');
 const { User, Screed, UserNote, Author, Shelf, ScreedShelf } = db;
 const { environment } = require('../config');
-const { asyncHandler, csrfProtection } = require('../utils');
+const { asyncHandler, csrfProtection, getShelfScreeds } = require('../utils');
 const { requireAuth } = require('../auth');
 
 const router = express.Router();
@@ -17,9 +17,28 @@ const shelfValidators = [
 ];
 
 
-
 router.get('/new', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
     res.render('shelf-add', {
+        csrfToken: req.csrfToken()
+    });
+}));
+
+
+router.get('/:id', requireAuth, csrfProtection, asyncHandler(async (req, res) => {
+    const shelfId = parseInt(req.params.id, 10);
+
+    const shelf = await Shelf.findByPk(shelfId, {
+        include: {
+            model: Screed,
+            include: [{ model: UserNote }, { model: Author }]
+        }
+    });
+
+    const shelfScreeds = getShelfScreeds(shelf);
+
+    res.render('shelf', {
+        shelf,
+        shelfScreeds,
         csrfToken: req.csrfToken()
     });
 }));
@@ -30,13 +49,12 @@ router.get('/:id/edit', requireAuth, csrfProtection, asyncHandler(async (req, re
 
     const shelf = await Shelf.findByPk(shelfId, {
         include: {
-            model: Screed
+            model: Screed,
+            include: [{ model: UserNote }, { model: Author }]
         }
     });
 
-    const shelfScreeds = shelf.dataValues.Screeds.map(data => {
-        return data.dataValues;
-    });
+    const shelfScreeds = getShelfScreeds(shelf);
 
     const allScreeds = await Screed.findAll();
 

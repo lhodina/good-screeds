@@ -6,4 +6,6 @@ block content
         ul
             each shelf in shelves
                 li
-                    a(href=`/shelves/${shelf.id}/edit`)= shelf.name
+                    a(href=`/shelves/${shelf.id}`)= shelf.name
+    if screeds
+        +displayScreeds(screeds)
