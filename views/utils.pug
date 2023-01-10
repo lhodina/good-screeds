@@ -18,7 +18,7 @@ mixin displayScreeds(screeds)
     table
         thead
             tr
-                th Image
+                th
                 th Title
                 th Author
                 th Text
@@ -28,8 +28,10 @@ mixin displayScreeds(screeds)
         tbody
         each screed in screeds
             tr
-                td= screed.imgLink
-                td= screed.title
+                td
+                    img(src=`${screed.imgLink}`)
+                td
+                    a(href=`/screeds/${screed.id}`)= screed.title
                 td= screed.authorName
                 td= screed.text
                 td= screed.url

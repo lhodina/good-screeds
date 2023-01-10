@@ -18,9 +18,6 @@ router.get('/', asyncHandler(async (req, res) => {
             }
         });
 
-        console.log(" * * * * * userId: ", userId);
-        console.log('* * * * * shelves: * * * * * ', shelves);
-
         const allShelf = shelves[0];
 
         const allShelfScreeds = getShelfScreeds(allShelf);

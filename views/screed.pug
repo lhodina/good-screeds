@@ -1,0 +1,16 @@
+extends layout.pug
+include utils.pug
+block content
+    link(rel='stylesheet' href='/styles/screed.css')
+    h1= screed.title
+    h2 by #{authorName}
+
+    br
+    p "#{screed.text}"
+    br
+    h3 Read Status: #{readStatus}
+    h3 Review
+    p= review
+    br
+    a(href=`/screeds/${screed.id}/edit`) Edit
+    a(href='/') Back

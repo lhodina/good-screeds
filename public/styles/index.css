@@ -5,3 +5,9 @@ a {
 form {
     margin: 10px;
 }
+
+img {
+    height: 70px;
+    aspect-ratio: auto;
+    /* width: 70px; */
+}

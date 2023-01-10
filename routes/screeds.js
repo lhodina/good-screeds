@@ -94,12 +94,12 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
             });
 
             shelfId = newShelf.id;
-
-            await ScreedShelf.create({
-                screedId: screed.id,
-                shelfId
-            });
         }
+
+        await ScreedShelf.create({
+            screedId: screed.id,
+            shelfId
+        });
 
         const allShelf = await Shelf.findOne({ where: { name: "All", userId }});
 
@@ -110,6 +110,38 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
 
         res.redirect('/');
     }
+}));
+
+
+router.get('/:id', csrfProtection, asyncHandler(async (req, res) => {
+    const { userId } = req.session.auth;
+    const screedId = parseInt(req.params.id, 10);
+    const screed = await Screed.findByPk(screedId);
+
+    const userNote = await UserNote.findOne({ where: {
+        userId,
+        screedId
+    } });
+
+    const author = await Author.findByPk(screed.authorId);
+    let review;
+    let readStatus;
+    if (userNote && userNote.review) {
+        review = userNote.review;
+    }
+
+    if (userNote && userNote.readStatus !== null) {
+        readStatus = userNote.readStatus;
+    }
+
+    res.render('screed', {
+        screed,
+        authorName: author.name,
+        review,
+        readStatus,
+        csrfToken: req.csrfToken()
+    });
+
 }));
 
 
@@ -125,7 +157,8 @@ router.get('/:id/edit', csrfProtection, asyncHandler(async (req, res) => {
 
     const author = await Author.findByPk(screed.authorId);
     const authors = await Author.findAll();
-    const shelves = await Shelf.findAll( { where: userId });
+
+    const shelves = await Shelf.findAll( { where: { userId } });
     let review;
     let readStatus;
     if (userNote && userNote.review) {
@@ -181,7 +214,6 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
     const validatorErrors = validationResult(req);
     if (!validatorErrors.isEmpty()) {
         const errors = validatorErrors.array().map((error) => error.msg);
-        console.log("typeof readStatus:", typeof readStatus);
         if (readStatus === "0") readStatus = false;
         if (readStatus === "1") readStatus = true;
 
@@ -216,24 +248,28 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
             });
         }
 
-        let shelfId;
-        const existingShelf = await Shelf.findOne( { where: { name: shelf } });
+        if (shelf) {
+            let shelfId;
+            const existingShelf = await Shelf.findOne( { where: { name: shelf } });
 
-        if (existingShelf) {
-            shelfId = existingShelf.id;
-        } else {
-            const newShelf = await Shelf.create({
-                name: shelf,
-                userId
+            if (existingShelf) {
+                shelfId = existingShelf.id;
+            } else {
+                const newShelf = await Shelf.create({
+                    name: shelf,
+                    userId
+                });
+
+                shelfId = newShelf.id;
+            }
+
+
+            await ScreedShelf.create({
+                screedId: screed.id,
+                shelfId
             });
-
-            shelfId = newShelf.id;
         }
 
-        await ScreedShelf.create({
-            screedId: screed.id,
-            shelfId
-        });
 
         res.render('screed-edit', {
             message: "Screed updated!",

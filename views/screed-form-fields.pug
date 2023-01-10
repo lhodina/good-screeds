@@ -58,8 +58,9 @@ fieldset
             input(type="radio" id="wantToRead" name="readStatus" value="0")
         label(for="wantToRead") Want To Read
 br
-label(for='shelf') Save this screed to a shelf:
+label(for='shelf') Add this screed to a shelf:
 br
+
 if (shelf && !shelves)
     input(name='shelf' value=shelf.name)
 else
@@ -70,4 +71,4 @@ else
                 option(value=shelf.name)
         else
             span (no shelves yet)
-    br
+br
