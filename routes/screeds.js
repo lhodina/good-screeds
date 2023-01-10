@@ -2,7 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 
 const db = require('../db/models');
-const { User, Screed, UserNote, Author, Shelf, ScreedShelf } = db;
+const { Screed, UserNote, Author, Shelf, ScreedShelf } = db;
 const { environment } = require('../config');
 const { asyncHandler, csrfProtection } = require('../utils');
 
@@ -84,7 +84,7 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
         }
 
         let shelfId;
-        const existingShelf = await Shelf.findOne( { where: { name: shelf } });
+        const existingShelf = await Shelf.findOne( { where: { name: shelf, userId } });
         if (existingShelf) {
             shelfId = existingShelf.id;
         } else if (shelf) {
@@ -100,6 +100,13 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
                 shelfId
             });
         }
+
+        const allShelf = await Shelf.findOne({ where: { name: "All", userId }});
+
+        await ScreedShelf.create({
+            screedId: screed.id,
+            shelfId: allShelf.id
+        });
 
         res.redirect('/');
     }

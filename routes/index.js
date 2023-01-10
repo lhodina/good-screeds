@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 const { environment } = require('../config');
 const { asyncHandler, csrfProtection, getShelfScreeds } = require('../utils');
 const db = require('../db/models');
-const { Shelf, Screed } = db;
+const { Shelf, Screed, Author, UserNote } = db;
 
 const router = express.Router();
 
@@ -12,19 +12,22 @@ router.get('/', asyncHandler(async (req, res) => {
         const { userId } = req.session.auth;
         const shelves = await Shelf.findAll({
             where: { userId },
-            include: [{ model: Screed }]
-         });
+            include: {
+                model: Screed,
+                include: [{ model: UserNote }, { model: Author }]
+            }
+        });
 
+        console.log(" * * * * * userId: ", userId);
         console.log('* * * * * shelves: * * * * * ', shelves);
 
-        const allScreeds = await Screed.findAll({ where: { userId }});
+        const allShelf = shelves[0];
 
-        const screeds = getShelfScreeds(allScreeds);
-
+        const allShelfScreeds = getShelfScreeds(allShelf);
 
         res.render('index', {
             shelves,
-            screeds
+            allShelfScreeds
         });
     } else {
         res.render('index');

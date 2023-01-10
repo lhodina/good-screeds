@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
 const db = require('../db/models');
-const { User } = db;
+const { User, Shelf } = db;
 const { environment } = require('../config');
 const { asyncHandler, csrfProtection } = require('../utils');
 const { loginUser, logoutUser } = require('../auth');
@@ -88,6 +88,24 @@ router.post('/register', csrfProtection, userValidators, asyncHandler(async (req
         user.hashedPassword = hashedPassword;
         await user.save();
         loginUser(req, res, user);
+
+        await Shelf.create({
+            name: "All",
+            userId: user.id
+        });
+
+        await Shelf.create({
+            name: "Read",
+            userId: user.id
+        });
+
+        await Shelf.create({
+            name: "Unread",
+            userId: user.id
+        });
+
+
+
         res.redirect('/');
     } else {
         const errors = validatorErrors.array().map((error) => error.msg);
