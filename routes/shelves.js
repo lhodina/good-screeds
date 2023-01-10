@@ -96,11 +96,7 @@ router.post('/:id/edit', requireAuth, csrfProtection, shelfValidators, asyncHand
             shelfId: shelf.id
         });
 
-        res.render('shelf-edit', {
-            shelf,
-            message: "Shelf updated successfully!",
-            csrfToken: req.csrfToken()
-        });
+        res.redirect('/');
     }
 }));
 

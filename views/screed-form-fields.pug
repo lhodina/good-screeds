@@ -6,7 +6,9 @@ if (title)
 else
     +field('Title*', 'title')
 br
+br
 label(for='author') Author*
+br
 if (author)
     input(name='author' list='authors' value=author.name)
     datalist(id='authors' name='authors' )
@@ -24,25 +26,30 @@ datalist(id='authors' name='authors')
     else
         span (no authors yet)
 br
+br
 if (text)
     +field('Content (paste shorter content like songs, tweets, etc.)', 'text', text, 'textarea')
 else
     +field('Content (paste shorter content like songs, tweets, etc.)', 'text', '', 'textarea')
+br
 br
 if (url)
     +field('URL (link to longer content like books)', 'url', url)
 else
     +field('URL (link to longer content like books)', 'url')
 br
+br
 if (imgLink)
     +field('Image Link', 'imgLink', imgLink)
 else
     +field('Image Link', 'imgLink')
 br
+br
 if (review)
     +field('My Review', 'review', review, 'textarea')
 else
     +field('My Review', 'review', '', 'textarea')
+br
 br
 fieldset
     div
@@ -57,6 +64,7 @@ fieldset
         else
             input(type="radio" id="wantToRead" name="readStatus" value="0")
         label(for="wantToRead") Want To Read
+br
 br
 label(for='shelf') Add this screed to a shelf:
 br

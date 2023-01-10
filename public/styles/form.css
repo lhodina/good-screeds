@@ -1,0 +1,10 @@
+.form-container {
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+}
+
+.screed-form {
+    border: 1px solid hotpink;
+    padding: 10px;
+}

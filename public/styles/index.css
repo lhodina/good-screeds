@@ -8,6 +8,6 @@ form {
 
 img {
     height: 70px;
-    aspect-ratio: auto;
-    /* width: 70px; */
+    /* aspect-ratio: auto; */
+    width: 70px;
 }

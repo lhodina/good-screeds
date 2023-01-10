@@ -270,15 +270,7 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
             });
         }
 
-
-        res.render('screed-edit', {
-            message: "Screed updated!",
-            screed,
-            userNote,
-            authors,
-            shelves,
-            csrfToken: req.csrfToken()
-        });
+        res.redirect(`/screeds/${screed.id}`);
     }
 }));
 

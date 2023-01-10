@@ -2,15 +2,27 @@ extends layout.pug
 include utils.pug
 block content
     link(rel='stylesheet' href='/styles/screed.css')
-    h1= screed.title
-    h2 by #{authorName}
+    main
+        div(id='screed')
+            div(id="heading-container")
+                div(id="image")
+                    img(src=`${screed.imgLink}`)
+                div(id="heading")
+                    h1= screed.title
+                    h2 by #{authorName}
+                    div(id="read-status")
+                        if (!readStatus)
+                            h3 Want to Read
+                        else
+                            h3 Read
+                        img(id="checkmark" src='/images/checkmark.png')
 
-    br
-    p "#{screed.text}"
-    br
-    h3 Read Status: #{readStatus}
-    h3 Review
-    p= review
-    br
-    a(href=`/screeds/${screed.id}/edit`) Edit
-    a(href='/') Back
+            br
+            p "#{screed.text}"
+            br
+
+            h4 My Review
+            p= review
+            br
+            a(href=`/screeds/${screed.id}/edit`) Edit
+            a(href='/') Back

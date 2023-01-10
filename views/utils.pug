@@ -8,6 +8,7 @@ mixin validationErrorSummary(errors)
 
 mixin field(labelText, fieldName, fieldValue, fieldType='text', placeholder=null)
     label(for=fieldName)= labelText
+    br
     if fieldType === 'textarea'
         textarea(id=fieldName name=fieldName rows='10')= fieldValue
     else
@@ -23,7 +24,7 @@ mixin displayScreeds(screeds)
                 th Author
                 th Text
                 th URL
-                th Review
+                th My Review
                 th Read Status
         tbody
         each screed in screeds
