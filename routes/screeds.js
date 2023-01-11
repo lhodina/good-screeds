@@ -39,7 +39,6 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
         title,
         author,
         text,
-        url,
         imgLink,
         review,
         readStatus,
@@ -70,7 +69,6 @@ router.post('/', csrfProtection, screedValidators, asyncHandler(async (req, res)
             title,
             authorId,
             text,
-            url,
             imgLink
         });
 
@@ -175,7 +173,6 @@ router.get('/:id/edit', csrfProtection, asyncHandler(async (req, res) => {
         title: screed.title,
         author,
         text: screed.text,
-        url: screed.url,
         imgLink: screed.imgLink,
         authors,
         shelves,
@@ -195,7 +192,6 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
         title,
         authorId,
         text,
-        url,
         imgLink,
         review,
         readStatus,
@@ -226,7 +222,6 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
             title: screed.title,
             author,
             text: screed.text,
-            url: screed.url,
             imgLink: screed.imgLink,
             review,
             readStatus,
@@ -237,7 +232,6 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
             title,
             authorId,
             text,
-            url,
             imgLink
         });
 

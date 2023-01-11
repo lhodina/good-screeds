@@ -25,9 +25,6 @@ module.exports = {
       text: {
         type: Sequelize.TEXT
       },
-      url: {
-        type: Sequelize.STRING
-      },
       imgLink: {
         type: Sequelize.STRING
       },

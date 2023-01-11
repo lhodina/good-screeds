@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     text: DataTypes.TEXT,
-    url: DataTypes.STRING,
     imgLink: DataTypes.STRING
   }, {});
   Screed.associate = function(models) {

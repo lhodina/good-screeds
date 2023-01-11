@@ -11,13 +11,18 @@ const getShelfScreeds = shelf => shelf.dataValues.Screeds.map(data => {
     const review = screed.UserNotes[0].dataValues.review;
     const readStatus = screed.UserNotes[0].dataValues.readStatus;
 
+    let text = screed.text;
+    if (text.length > 100) {
+        text = `${screed.text.slice(0, 100)}...`;
+    }
+
+
     const displayScreed = {
         id: screed.id,
         title: screed.title,
         authorId: screed.authorId,
         authorName,
-        text: screed.text,
-        url: screed.url,
+        text,
         imgLink: screed.imgLink,
         userNoteId,
         review,
