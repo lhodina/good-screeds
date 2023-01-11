@@ -44,3 +44,8 @@ div {
 p {
     margin-left: 20px;
 }
+
+
+#tags-section {
+    border: 1px solid lightgray;
+}

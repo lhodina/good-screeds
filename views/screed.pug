@@ -2,6 +2,7 @@ extends layout.pug
 include utils.pug
 block content
     link(rel='stylesheet' href='/styles/screed.css')
+    script(src='/scripts/tags.js' type='module')
     main
         div(id='screed')
             div(id="heading-container")
@@ -23,6 +24,15 @@ block content
 
             h4 My Review
             p= review
+            br
+            br
+            div(class='tags-section' id=`${screed.id}`)
+                h4 Tags
+                button(id='show-tag-form-button') Add Tag
+                form(id='add-tag-form' action=`/screeds/${screed.id}/tags`)
+                    +field('', 'tag', '')
+                    button(id='submit-tag-button') Add
+            br
             br
             a(href=`/screeds/${screed.id}/edit`) Edit
             a(href='/') Back

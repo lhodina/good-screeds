@@ -23,8 +23,7 @@ mixin displayScreeds(screeds)
                 th Title
                 th Author
                 th Text
-                th My Review
-                th Read Status
+                th Status
         tbody
         each screed in screeds
             tr
@@ -34,5 +33,7 @@ mixin displayScreeds(screeds)
                     a(href=`/screeds/${screed.id}`)= screed.title
                 td= screed.authorName
                 td= screed.text
-                td= screed.review
-                td= screed.readStatus
+                if (screed.readStatus)
+                    td Read
+                else
+                    td Want to Read

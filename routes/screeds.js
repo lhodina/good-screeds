@@ -269,4 +269,14 @@ router.post('/:id/edit', csrfProtection, screedValidators, asyncHandler(async (r
 }));
 
 
+router.post('/:id/tags', asyncHandler(async (req, res) => {
+    console.log("req.body:", req.body);
+    // const { userId } = req.session.auth;
+    // const screedId = parseInt(req.params.id, 10);
+    // const { tag } = req.body;
+
+
+}));
+
+
 module.exports = router;
